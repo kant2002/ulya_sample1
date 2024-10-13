@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="
+https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js
+"></script>
+        <style>
+            #container {
+                display: flex;
+            }
+            button {
+                width: 40px;
+                height: 40px;
+            }
+
+            #controls {
+                display: grid;
+                padding-top: 100px;
+                padding-left: 50px;
+                grid-template-columns: [first] 60px [center] 60px [end-center] 60px [end];
+                grid-template-rows: [first] 60px [center] 60px [end-center] 60px [end];
+            }
+
+            #controls > button {
+                grid-column-start: center;
+                grid-column-end: end-center;
+                grid-row-start: first;
+                grid-row-end: center;
+            }
+
+            #controls > button + button {
+                grid-column-start: center;
+                grid-column-end: end;
+                grid-row-start: end-center;
+                grid-row-end: end-center;
+            }
+
+            #controls > button + button + button {
+                grid-column-start: end-center;
+                grid-column-end: end-center;
+                grid-row-start: center;
+                grid-row-end: end-center;
+            }
+
+            #controls > button + button + button + button {
+                grid-column-start: first;
+                grid-column-end: center;
+                grid-row-start: center;
+                grid-row-end: end-center;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <canvas width='400' height='400'></canvas>
+            <div id="controls">
+                <button> ^ </button>
+                <button> v </button>
+                <button> &gt; </button>
+                <button> &lt; </button>
+            </div>
+        </div>
+
+        <a href="https://github.com/kant2002/hower_sample1">See GitHub</a>
+    </body>
+    <script type="module" src="dist/index.js"></script>
+</html>
