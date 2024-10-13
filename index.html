@@ -5,6 +5,9 @@
 https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js
 "></script>
         <style>
+            .disable-dbl-tap-zoom {
+                touch-action: manipulation;
+            }
             #container {
                 --display: flex;
             }
@@ -51,7 +54,7 @@ https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js
 
         </style>
     </head>
-    <body>
+    <body class="disable-dbl-tap-zoom">
         <div id="container">
             <canvas width='400' height='400'></canvas>
             <div id="controls">
