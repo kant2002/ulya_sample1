@@ -10,6 +10,15 @@ controls.getElementsByTagName("button")[0].onclick = нажатьВверх;
 controls.getElementsByTagName("button")[1].onclick = нажатьВниз;
 controls.getElementsByTagName("button")[2].onclick = нажатьВправо;
 controls.getElementsByTagName("button")[3].onclick = нажатьВлево;
+const fullscreen = document.getElementById("fullscreen");
+fullscreen.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    }
+    else if (document.exitFullscreen) {
+        document.exitFullscreen();
+    }
+}, false);
 const body = document.body;
 function нажатьВверх() {
     статусДвижения.вверх = true;
