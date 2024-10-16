@@ -47,7 +47,7 @@ body.addEventListener("keydown", function(ev) {
     }
     //console.log(статусДвижения);
 }, false)
-const размерУровня = {ширина: 19, высота: 19}
+const размерУровня = {ширина: 15, высота: 15}
 let текущаяПозиция = {x:0,y:0}
 let позицияВыхода = {x:размерУровня.ширина - 1,y:размерУровня.высота - 1}
 let пустойСтатусДвижения = {
@@ -130,10 +130,10 @@ setInterval(function () {
     статусДвижения = {...пустойСтатусДвижения}
 }, 100);
 
-var w = 400;
-var h = 400;
-var BLOCK_W = Math.floor(w / размерУровня.ширина);
-var BLOCK_H = Math.floor(h / размерУровня.высота);
+var w = c.width;
+var h = c.height;
+var BLOCK_W = Math.floor(w / (размерУровня.ширина + 2));
+var BLOCK_H = Math.floor(h / (размерУровня.высота + 2));
 
 var tickInterval : number | undefined;
 var drawInterval : number | undefined;
@@ -214,9 +214,9 @@ function inBoundsCheck(currentNode: MazeNode, i: number, j: number) {
 
 // draws the board and the moving shape
 function draw(ctx: CanvasRenderingContext2D) {
-    for (let x = 0; x < размерУровня.ширина; ++x) {
-        for (let y = 0; y < размерУровня.высота; ++y) {
-            if (maze[y][x].block) {
+    for (let x = 0; x < размерУровня.ширина + 2; ++x) {
+        for (let y = 0; y < размерУровня.высота + 2; ++y) {
+            if (y === 0 || x === 0 || y === размерУровня.высота + 1 || x === размерУровня.ширина + 1 || maze[y - 1][x - 1].block) {
                 ctx.fillStyle = "black";
                 
             } else {
@@ -227,14 +227,13 @@ function draw(ctx: CanvasRenderingContext2D) {
     }
 
     ctx.fillStyle = "red";
-    ctx.fillRect(BLOCK_W * текущаяПозиция.x, BLOCK_H * текущаяПозиция.y, BLOCK_W, BLOCK_H);
+    ctx.fillRect(BLOCK_W * (текущаяПозиция.x + 1), BLOCK_H * (текущаяПозиция.y + 1), BLOCK_W, BLOCK_H);
 
-    ctx.fillStyle = "green";
-    ctx.fillRect(BLOCK_W * позицияВыхода.x, BLOCK_H * позицияВыхода.y, BLOCK_W, BLOCK_H);
+    ctx.fillStyle = "green";    
+    ctx.fillRect(BLOCK_W * (позицияВыхода.x + 1), BLOCK_H * (позицияВыхода.y + 1), BLOCK_W, BLOCK_H);
 }
   
 function tick() {
-    console.log("1");
     // while the frontierList is not empty
     if (frontierList.length > 0) {
 

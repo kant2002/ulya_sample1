@@ -8,8 +8,20 @@ https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js
             html * {
                 touch-action: manipulation;
             }
-            #container {
-                --display: flex;
+
+            canvas {
+                width: calc(100vw - 10px);
+                height: calc(100vw - 10px);
+            }
+
+            @media (orientation: landscape) {
+                canvas {
+                    width: calc(100vh - 10px);
+                    height: calc(100vh - 10px);
+                }
+                #container {
+                    display: flex;
+                }
             }
             button {
                 width: 40px;
@@ -18,7 +30,7 @@ https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js
 
             #controls {
                 display: grid;
-                padding-top: 100px;
+                padding-top: 50px;
                 padding-left: 50px;
                 grid-template-columns: [first] 60px [center] 60px [end-center] 60px [end];
                 grid-template-rows: [first] 60px [center] 60px [end-center] 60px [end];
@@ -56,7 +68,7 @@ https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js
     </head>
     <body class="disable-dbl-tap-zoom">
         <div id="container">
-            <canvas width='400' height='400'></canvas>
+            <canvas></canvas>
             <div id="controls">
                 <button> ^ </button>
                 <button> v </button>
