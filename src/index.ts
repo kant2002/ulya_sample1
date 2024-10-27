@@ -3,6 +3,9 @@
 async function dressGame() {
     class DrawinContext {
         constructor(public ctx: CanvasRenderingContext2D) {}
+        clear() {
+            this.ctx.clearRect(0, 0, c.width, c.height);
+        }
         drawImage(name: string) {
             const imageDescriptor = images[name];
             var srcWorldCoordinates = {
@@ -10,27 +13,30 @@ async function dressGame() {
                 y: imageDescriptor.y,
             }
             
-            console.log(imageDescriptor.img.naturalWidth, imageDescriptor.img.naturalHeight);
-            console.log(srcWorldCoordinates.x * scale, srcWorldCoordinates.y * scale);
-            console.log(imageDescriptor.img.width * scale, imageDescriptor.img.height * scale);
-            console.log(c.width, c.height);
             this.ctx.drawImage(imageDescriptor.img, 
                 0, 0, 
                 imageDescriptor.img.naturalWidth, imageDescriptor.img.naturalHeight, 
+                imageDescriptor.x * scale, imageDescriptor.y * scale, 
+                imageDescriptor.img.width * scale, imageDescriptor.img.height * scale);
+        }
+        drawThumb(name: string, x: number, y: number) {
+            const imageDescriptor = images[name];
+            var srcWorldCoordinates = {
+                x: imageDescriptor.x,
+                y: imageDescriptor.y,
+            }
+            
+            const thumbScale = 0.6;
+            this.ctx.drawImage(imageDescriptor.img, 
                 0, 0, 
-                Math.round(imageDescriptor.img.width * scale), imageDescriptor.img.height * scale);
-            // var factor  = Math.min ( c.width / imageDescriptor.img.width, c.height / imageDescriptor.img.height );
-            // this.ctx.scale(factor, factor);
-            // this.ctx.drawImage(imageDescriptor.img, 0, 0);
-            // this.ctx.scale(1 / factor, 1 / factor);
-
-            // var ratio = imageDescriptor.img.naturalWidth / imageDescriptor.img.naturalHeight;
-            // var width = this.ctx.canvas.width;
-            // var height = width / ratio;
-            // this.ctx.drawImage(imageDescriptor.img, 0, 0, width, height);
+                imageDescriptor.img.naturalWidth, imageDescriptor.img.naturalHeight, 
+                x, y, 
+                imageDescriptor.img.width * scale * thumbScale, imageDescriptor.img.height * scale * thumbScale);
         }
     }
     var c = document.getElementsByTagName('canvas')[0];
+    c.width = c.clientWidth;
+    c.height = c.clientHeight;
     let ctx = c.getContext("2d");
     if (ctx === null) {
         throw new Error("Cannot obtain 2D context");
@@ -46,7 +52,6 @@ async function dressGame() {
     var canvasHeight = parseInt(image.getAttribute("h")!);
     var canvasWeight = parseInt(image.getAttribute("w")!);
     var scale = Math.min(c.height / canvasHeight, c.width / canvasWeight);
-    console.log(c.clientHeight / canvasHeight, c.clientWidth / canvasWeight, scale);
     const images : Record<string, {imagePath:string, img: HTMLImageElement, x: number, y: number}> = {};
     var layers = xmlDoc.getElementsByTagName("layer");
     let promises = [];
@@ -67,8 +72,30 @@ async function dressGame() {
         };
     }
     await Promise.all(promises);
-    console.log("Девочка");
     context.drawImage("Девочка");
+
+    //context.drawImage("Сумочка");
+    context.drawThumb("Сумочка", 200, -100);
+    //context.drawImage("Pasted Layer #1");
+    context.drawThumb("Pasted Layer #1", 200, 0);
+    //context.drawImage("Футболка 1");
+    context.drawThumb("Футболка 1", 300, 0);
+    //context.drawImage("Блузка 1");
+    context.drawThumb("Блузка 1", 200, 50);
+    //context.drawImage("юбка 1");
+    context.drawThumb("юбка 1", 200, 80);
+    //context.drawImage("юбка 2");
+    context.drawThumb("юбка 2", 300, 80);
+    //context.drawImage("Брюки 1");
+    context.drawThumb("Брюки 1", 200, 120);
+    //context.drawImage("Туфли 1");
+    context.drawThumb("Туфли 1", 200, 130);
+    //context.drawImage("Туфли 2");
+    context.drawThumb("Туфли 2", 250, 130);
+    //context.drawImage("Перчатки");
+    context.drawThumb("Перчатки", 300, 30);
+    //context.drawImage("Вечернее платье");
+    //context.drawImage("Пальто");
 }
 document.addEventListener("DOMContentLoaded", function() {
     dressGame()
