@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <script src="
+https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js
+"></script>
+        <style>
+            html * {
+                touch-action: manipulation;
+                -webkit-user-select: none; /* Safari */
+                user-select : none;
+            }
+
+            canvas {
+                width: calc(100vw - 10px);
+                height: calc(100vw - 10px);
+            }
+
+            @media (orientation: landscape) {
+                canvas {
+                    width: calc(100vh - 10px);
+                    height: calc(100vh - 10px);
+                }
+                #container {
+                    display: flex;
+                }
+            }
+            button {
+                width: 80px;
+                height: 80px;
+            }
+
+            #controls {
+                display: grid;
+                padding-top: 50px;
+                padding-left: 50px;
+                grid-template-columns: [first] 90px [center] 90px [end-center] 90px [end];
+                grid-template-rows: [first] 90px [center] 90px [end-center] 90px [end];
+            }
+
+            #controls > button {
+                grid-column-start: center;
+                grid-column-end: end-center;
+                grid-row-start: first;
+                grid-row-end: center;
+            }
+
+            #controls > button + button {
+                grid-column-start: center;
+                grid-column-end: end;
+                grid-row-start: end-center;
+                grid-row-end: end-center;
+            }
+
+            #controls > button + button + button {
+                grid-column-start: end-center;
+                grid-column-end: end-center;
+                grid-row-start: center;
+                grid-row-end: end-center;
+            }
+
+            #controls > button + button + button + button {
+                grid-column-start: first;
+                grid-column-end: center;
+                grid-row-start: center;
+                grid-row-end: end-center;
+            }
+
+        </style>
+    </head>
+    <body class="disable-dbl-tap-zoom">
+        <div id="container">
+            <canvas></canvas>
+            <div id="controls">
+                <button> ^ </button>
+                <button> v </button>
+                <button> &gt; </button>
+                <button> &lt; </button>
+            </div>
+            <button id="fullscreen"> F </button>
+        </div>
+
+        <a href="https://github.com/kant2002/hower_sample1">See GitHub</a>
+    </body>
+    <script type="module" src="dist/maze.js"></script>
+</html>

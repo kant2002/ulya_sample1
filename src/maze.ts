@@ -1,5 +1,18 @@
 /// <reference types="howler" />
-function dressGame() {
+function mazeGame() {
+function нажатьВверх() {
+    статусДвижения.вверх = true;
+}
+function нажатьВниз() {
+    статусДвижения.вниз = true;
+}
+function нажатьВправо() {
+    статусДвижения.право = true;
+}
+function нажатьВлево() {
+    статусДвижения.лево = true; 
+}
+
 var c = document.getElementsByTagName('canvas')[0];
 let ctx = c.getContext("2d");
 if (ctx === null) {
@@ -20,18 +33,6 @@ fullscreen.addEventListener("click", function() {
       }    
 }, false);
 const body = document.body;
-function нажатьВверх() {
-    статусДвижения.вверх = true;
-}
-function нажатьВниз() {
-    статусДвижения.вниз = true;
-}
-function нажатьВправо() {
-    статусДвижения.право = true;
-}
-function нажатьВлево() {
-    статусДвижения.лево = true; 
-}
 body.addEventListener("keydown", function(ev) {
     if (ev.code == "ArrowLeft") {
         нажатьВлево()
@@ -73,7 +74,6 @@ let звук = new Howl({
 });
 let шаги = звук.play('шаги');
 звук.pause(шаги)    
-
 
 setInterval(function () {
     if (ctx === null) {
@@ -288,3 +288,4 @@ var frontierList = new Array();
 
 startGame(ctx);
 }
+mazeGame();
