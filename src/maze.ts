@@ -14,6 +14,8 @@ function нажатьВлево() {
 }
 
 var c = document.getElementsByTagName('canvas')[0];
+c.width = c.clientWidth;
+c.height = c.clientHeight;
 let ctx = c.getContext("2d");
 if (ctx === null) {
     throw new Error("Cannot obtain 2D context");
