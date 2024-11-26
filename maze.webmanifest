@@ -1,0 +1,15 @@
+{
+    "background_color": "purple",
+    "description": "Лабиринт",
+    "display": "fullscreen",
+    "icons": [
+      {
+        "src": "icon/fox-icon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "name": "Лабиринт",
+    "short_name": "Лабиринт",
+    "start_url": "/ulya_sample1/maze.html"
+  }
