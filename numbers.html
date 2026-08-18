@@ -9,38 +9,35 @@
         button {
             font-size: 2em;
         }
+        #custom-dropdown {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            z-index: 9999; /* Ensure it stays above slides */
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px;
+            border-radius: 5px;
+        }
+        
+        #custom-dropdown select {
+            background: #fff;
+            color: #000;
+            padding: 5px;
+            border-radius: 3px;
+            border: none;
+            font-size: 14px;
+        }
     </style>
-    <script type="text/javascript">
-    let voices = [];
-    
-    async function populateVoiceList() {
-      await SpeechRecognition.available({ langs: ["ru-RU"], processLocally: true })
-      voices = window.speechSynthesis.getVoices()
-      voices = voices.filter(voice => voice.lang === 'ru-RU');
-    }
-    populateVoiceList();
-    
-    if (window.speechSynthesis.onvoiceschanged !== undefined) {
-      window.speechSynthesis.onvoiceschanged = populateVoiceList;
-    }
-    
-    function speak(event) {
-        const text = event.target.previousElementSibling.textContent;
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.voice = voices[0];
-        utterance.onend = function (event) {
-          console.log("SpeechSynthesisUtterance.onend");
-        };
-    
-        utterance.onerror = function (event) {
-          console.error("SpeechSynthesisUtterance.onerror");
-        };
-
-        window.speechSynthesis.speak(utterance);
-      }
-    </script>
   </head>
   <body>
+      <div id="custom-dropdown">
+          <select id="slide-selector">
+              <option value="">🌍</option>
+              <option value="ru-RU">Русский</option>
+              <option value="uk-UA">Українська</option>
+              <option value="kk-KZ">Қазақ</option>
+          </select>
+      </div>
     <div class="reveal">
       <div class="slides">
         <section>
@@ -345,6 +342,104 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.min.js" integrity="sha512-QYXU3Cojl94ZRiZRjUZpyg1odj9mKTON9MsTMzGNx/L3JqvMA3BQNraZwsZ83UeisO+QMVfFa83SyuYYJzR9hw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
       Reveal.initialize();
+    </script>
+    <script type="text/javascript">
+    let voices = [];
+    let currentLang = 'ru-RU';
+    async function populateVoiceList() {
+      await SpeechRecognition.available({ langs: [currentLang], processLocally: true })
+      voices = window.speechSynthesis.getVoices()
+      voices = voices.filter(voice => voice.lang === currentLang);
+    }
+    populateVoiceList();
+    
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = populateVoiceList;
+    }
+
+    let values =
+      {
+        '0': { 'ru-RU': 'Ноль', 'uk-UA': 'Нуль', 'kk-KZ': 'Нөл' },
+        '1': { 'ru-RU': 'Один', 'uk-UA': 'Один', 'kk-KZ': 'Бір' },
+        '2': { 'ru-RU': 'Два', 'uk-UA': 'Два', 'kk-KZ': 'Екі' },
+        '3': { 'ru-RU': 'Три', 'uk-UA': 'Три', 'kk-KZ': 'Үш' },
+        '4': { 'ru-RU': 'Четыре', 'uk-UA': 'Чотири', 'kk-KZ': 'Төрт' },
+        '5': { 'ru-RU': 'Пять', 'uk-UA': 'П\'ять', 'kk-KZ': 'Бес' },
+        '6': { 'ru-RU': 'Шесть', 'uk-UA': 'Шість', 'kk-KZ': 'Алты' },
+        '7': { 'ru-RU': 'Семь', 'uk-UA': 'Сімь', 'kk-KZ': 'Жеті' },
+        '8': { 'ru-RU': 'Восемь', 'uk-UA': 'Вісімь', 'kk-KZ': 'Сегіз' },
+        '9': { 'ru-RU': 'Девять', 'uk-UA': 'Дев\'ять', 'kk-KZ': 'Тоғыз' },
+        '10': { 'ru-RU': 'Десять', 'uk-UA': 'Десять', 'kk-KZ': 'Он' },
+        '20': { 'ru-RU': 'Двадцать', 'uk-UA': 'Двадцять', 'kk-KZ': 'Жиырма' },
+        '30': { 'ru-RU': 'Тридцать', 'uk-UA': 'Тридцять', 'kk-KZ': 'Отыз' },
+        '40': { 'ru-RU': 'Сорок', 'uk-UA': 'Сорок', 'kk-KZ': 'Қырық' },
+        '50': { 'ru-RU': 'Пятьдесят', 'uk-UA': 'П\'ятдесят', 'kk-KZ': 'Елу' },
+        '60': { 'ru-RU': 'Шестьдесят', 'uk-UA': 'Шістдесят', 'kk-KZ': 'Алпыс' },
+        '70': { 'ru-RU': 'Семьдесят', 'uk-UA': 'Сімдесят', 'kk-KZ': 'Жетпіс' },
+        '80': { 'ru-RU': 'Восемьдесят', 'uk-UA': 'Вісімдесят', 'kk-KZ': 'Сегіз' },
+        '90': { 'ru-RU': 'Девяносто', 'uk-UA': 'Дев\'яносто', 'kk-KZ': 'Тоғыз' },
+        '100': { 'ru-RU': 'Сто', 'uk-UA': 'Сто', 'kk-KZ': 'Бір жүз' },
+        '200': { 'ru-RU': 'Двести', 'uk-UA': 'Двісті', 'kk-KZ': 'Екі жүз' },
+        '300': { 'ru-RU': 'Триста', 'uk-UA': 'Триста', 'kk-KZ': 'Үш жүз' },
+        '400': { 'ru-RU': 'Четыреста', 'uk-UA': 'Чотириста', 'kk-KZ': 'Төрт жүз' },
+        '500': { 'ru-RU': 'Пятьсот', 'uk-UA': 'П\'ятьсот', 'kk-KZ': 'Бес жүз' },
+        '600': { 'ru-RU': 'Шестьсот', 'uk-UA': 'Шістсот', 'kk-KZ': 'Алты жүз' },
+        '700': { 'ru-RU': 'Семьсот', 'uk-UA': 'Сімсот', 'kk-KZ': 'Жеті жүз' },
+        '800': { 'ru-RU': 'Восемьсот', 'uk-UA': 'Вісімсот', 'kk-KZ': 'Сегіз жүз' },
+        '900': { 'ru-RU': 'Девятьсот', 'uk-UA': 'Дев\'ятьсот', 'kk-KZ': 'Тоғыз жүз' },
+        '1 000': { 'ru-RU': 'Один тысяча', 'uk-UA': 'Одна тисяча', 'kk-KZ': 'Бір мың' },
+        '2 000': { 'ru-RU': 'Две тысячи', 'uk-UA': 'Дві тисячі', 'kk-KZ': 'Екі мың' },
+        '3 000': { 'ru-RU': 'Три тысячи', 'uk-UA': 'Три тисячі', 'kk-KZ': 'Үш мың' },
+        '4 000': { 'ru-RU': 'Четыре тысячи', 'uk-UA': 'Чотири тисячі', 'kk-KZ': 'Төрт мың' },
+        '5 000': { 'ru-RU': 'Пять тысяч', 'uk-UA': 'П\'ять тисяч', 'kk-KZ': 'Бес мың' },
+        '6 000': { 'ru-RU': 'Шесть тысяч', 'uk-UA': 'Шіст тисяч', 'kk-KZ': 'Алты мың' },
+        '7 000': { 'ru-RU': 'Семь тысяч', 'uk-UA': 'Сімь тисяч', 'kk-KZ': 'Жеті мың' },
+        '8 000': { 'ru-RU': 'Восемь тысяч', 'uk-UA': 'Вісім тисяч', 'kk-KZ': 'Сегіз мың' },
+        '9 000': { 'ru-RU': 'Девять тысяч', 'uk-UA': 'Дев\'ять тисяч', 'kk-KZ': 'Тоғыз мың' },
+        '10 000': { 'ru-RU': 'Десять тысяч', 'uk-UA': 'Десять тисяч', 'kk-KZ': 'Он мың' },
+        '20 000': { 'ru-RU': 'Двадцать тысяч', 'uk-UA': 'Двадцять тисяч', 'kk-KZ': 'Жиырма мың' },
+        '30 000': { 'ru-RU': 'Тридцать тысяч', 'uk-UA': 'Тридцять тисяч', 'kk-KZ': 'Отыз мың' },
+        '40 000': { 'ru-RU': 'Сорок тысяч', 'uk-UA': 'Сорок тисяч', 'kk-KZ': 'Қырық мың' },
+        '50 000': { 'ru-RU': 'Пятдесят тысяч', 'uk-UA': 'П\'ятдесят тисяч', 'kk-KZ': 'Елу мың' },
+        '60 000': { 'ru-RU': 'Шестдесят тысяч', 'uk-UA': 'Шістсот тысяч', 'kk-KZ': 'Алпыс мың' },
+        '70 000': { 'ru-RU': 'Семьдесят тысяч', 'uk-UA': 'Сімсот тысяч', 'kk-KZ': 'Жетпіс мың' },
+        '80 000': { 'ru-RU': 'Восемьдесят тысяч', 'uk-UA': 'Вісімсот тысяч', 'kk-KZ': 'Сексен мың' },
+        '90 000': { 'ru-RU': 'Девятьдесят тысяч', 'uk-UA': 'Дев\'ятсот тысяч', 'kk-KZ': 'Тоқсан мың' },
+        '100 000': { 'ru-RU': 'Сто тысяч', 'uk-UA': 'Сто тисяч', 'kk-KZ': 'Бір жүз мың' },
+        '200 000': { 'ru-RU': 'Двести тысяч', 'uk-UA': 'Двісті тисяч', 'kk-KZ': 'Екі жүз мың' },
+        '300 000': { 'ru-RU': 'Триста тысяч', 'uk-UA': 'Триста тисяч', 'kk-KZ': 'Үш жүз мың' },
+        '400 000': { 'ru-RU': 'Четыреста тысяч', 'uk-UA': 'Чотиреста тисяч', 'kk-KZ': 'Төрт жүз мың' },
+        '500 000': { 'ru-RU': 'Пятьсот тысяч', 'uk-UA': 'П\'ятсот тисяч', 'kk-KZ': 'Бес жүз мың' },
+        '600 000': { 'ru-RU': 'Шестьсот тысяч', 'uk-UA': 'Шістсот тисяч', 'kk-KZ': 'Алты жүз мың' },
+        '700 000': { 'ru-RU': 'Семьсот тысяч', 'uk-UA': 'Сімсот тисяч', 'kk-KZ': 'Жеті жүз мың' },
+        '800 000': { 'ru-RU': 'Восемьсот тысяч', 'uk-UA': 'Вісімсот тисяч', 'kk-KZ': 'Сегіз жүз мың' },
+        '900 000': { 'ru-RU': 'Девятьсот тысяч', 'uk-UA': 'Дев\'ятсот тисяч', 'kk-KZ': 'Тоғыз жүз мың' },
+        '1 000 000': { 'ru-RU': 'Один миллион', 'uk-UA': 'Один миллион', 'kk-KZ': 'Бір миллион' },
+      }
+
+    document.getElementById('slide-selector').addEventListener('change', function () {
+      currentLang = this.value;
+      populateVoiceList()
+      const headers = document.getElementsByTagName("h1");
+      for (let i = 0; i < headers.length; i++) {
+        headers[i].nextElementSibling.textContent = values[headers[i].textContent][currentLang];
+      }
+    });
+    
+    function speak(event) {
+        const text = event.target.previousElementSibling.textContent;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.voice = voices[0];
+        utterance.onend = function (event) {
+          console.log("SpeechSynthesisUtterance.onend");
+        };
+    
+        utterance.onerror = function (event) {
+          console.error("SpeechSynthesisUtterance.onerror");
+        };
+
+        window.speechSynthesis.speak(utterance);
+      }
     </script>
   </body>
 </html>
